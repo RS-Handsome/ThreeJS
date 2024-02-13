@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MockupProduct</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/three@latest/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@latest/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@latest/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dat.gui@latest/build/dat.gui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three-bmfont-text@latest/dist/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/load-bmfont@latest/index.js"></script>
+</head>
+<body>
+  <div class="three_root">
+    <div class="three_header">
+      <img src="1.jpg" alt="logo" class="logo">
+      <button class="three_btn">Back</button>
+    </div>
+    <div class="three_main">
+      <!-- Three scene will be here -->
+      <div class="three_left_control_panel">
+        <h2>Load Model</h2>
+        <div class="model_list">
+          <img src="cube.png" alt="button" class="model" onclick="handleModel('cube')">
+          <img src="cylinder.png" alt="mug" class="model" onclick="handleModel('cylinder')">
+          <img src="cube.png" alt="button" class="model" onclick="handleModel('cube')">
+          <img src="cylinder.png" alt="mug" class="model" onclick="handleModel('cylinder')">
+          <img src="cube.png" alt="button" class="model" onclick="handleModel('cube')">
+          <img src="cylinder.png" alt="mug" class="model" onclick="handleModel('cylinder')">
+          <img src="cube.png" alt="button" class="model" onclick="handleModel('cube')">
+          <img src="cylinder.png" alt="mug" class="model" onclick="handleModel('cylinder')">
+        </div>
+      </div>
+      <div class="three_scene">
+        <div id="three_scene"></div>
+      </div>
+      <div class="three_right_panel">
+        <div class="texture_choose_panel">
+          <h2>Select Image for model</h2>
+          <div class="texture_list">
+            <img src="1.png" alt="texture" class="texture" onclick="handleTexture('t1')">
+            <img src="1.jpg" alt="texture" class="texture" onclick="handleTexture('t2')">
+            <img src="2.png" alt="texture" class="texture" onclick="handleTexture('t3')">
+            <img src="4.png" alt="texture" class="texture" onclick="handleTexture('t4')">
+            <img src="" alt="texture" class="texture">
+            <img src="" alt="texture" class="texture">
+          </div>
+        </div>
+        <div class="text_edit_panel">
+          <h2>Edit Text for model</h2>
+          <input type="text" class="text">
+          <label for="enableText">
+            enable Text
+            <input type="checkbox" name="enableText" id="enableText" class="enableText">
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="three_footer">
+      <p>This is our project</p>
+    </div>
+  </div>
+  <script>
+    // create scene, camera, renderer
+    const changeGeometry = function(oldModel, newGeometry){
+      oldModel.geometry = newGeometry;
+      oldModel.material.needsUpdate = true;
+      // oldModel.text = newText;
+      let newModel = oldModel;
+      return newModel;
+    }
+    const changeTexture = function(oldModel, newImage){
+      console.log('texture',oldModel.material.map);
+      let textureLoader = new THREE.TextureLoader(); 
+      let texture = textureLoader.load(newImage);
+      oldModel.material.map = texture;
+    }
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(
+      100, // This is the field of view in degrees 
+      0.6*window.innerWidth / (0.9*window.innerHeight), // This represents the aspect ratio of the camera
+      0.1, // This is the near clipping plane
+      1000 // This is the far clipping plane
+    );camera.position.z = 3;
+    const renderer = new THREE.WebGLRenderer({alpha: true});renderer.setSize(1024, 640);
+    document.getElementById('three_scene').appendChild(renderer.domElement);
+    const textureLoader = new THREE.TextureLoader();
+    // Add light on scene
+    const light = new THREE.AmbientLight(0xffffff, 1);
+    scene.add(light);
+    const pointLight = new THREE.PointLight(0xffffff, 1);
+    pointLight.position.set(5, 5, 5);
+    scene.add(pointLight);
+    // Set up OrbitControls
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    // create objects on scene
+      // Cylinder mesh
+      const texture = textureLoader.load('4.png');
+      const geometry = new THREE.CylinderGeometry(1, 1, 3, 32);
+      const material = new THREE.MeshPhongMaterial({ map: texture });
+      const cylinder = new THREE.Mesh(geometry, material);
+      scene.add(cylinder);
+      console.log(cylinder);
+      //
+      const gui = new dat.GUI();
+      console.log('texture',texture)
+	    gui.add( texture.repeat, 'x', 0, 5, .01 ).name( 'texture.repeat.x' );
+	    gui.add( texture.repeat, 'y', 0, 5, .01 ).name( 'texture.repeat.y' );
+	    gui.add( texture.offset, 'x', - 2, 2, .01 ).name( 'texture.offset.x' );
+	    gui.add( texture.offset, 'y', - 2, 2, .01 ).name( 'texture.offset.y' );
+	    gui.add( texture.center, 'x', - .5, 1.5, .01 ).name( 'texture.center.x' );
+	    gui.add( texture.center, 'y', - .5, 1.5, .01 ).name( 'texture.center.y' );
+    // const testModel = changeGeometry( cylinder, testGeometry);
+    function handleModel(model){
+      console.log(model);
+      let testGeometry;
+      if(model == 'cylinder')testGeometry = new THREE.CylinderGeometry(1, 1, 3, 32);
+      if(model == 'cube')testGeometry = new THREE.BoxGeometry(1,1,1);
+      changeGeometry( cylinder, testGeometry);
+    }
+    function handleTexture(Image){
+      console.log(Image);
+      let newImage;
+      if(Image == 't1')newImage = '1.png';
+      if(Image == 't2')newImage = '1.jpg';
+      if(Image == 't3')newImage = '2.png';
+      if(Image == 't4')newImage = '4.png';
+      changeTexture(cylinder,newImage);
+    }
+    // Render function
+    function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        // texture.needsUpdate = true
+        renderer.render(scene, camera);
+    }
+    animate();
+  </script>
+</body>
+</html>
