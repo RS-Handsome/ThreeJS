@@ -1,21 +1,27 @@
-*{
+body{margin: 0;padding: 0;}
+base{
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 .three_root{
-  background-color: lightblue;
-  border: 1px solid;
+  background-color: white;
   width: 100vw;
   height: 100vh;
-}
-.three_header{
-  background-color: #eeeeee70;
-  padding: 10px;
-  border: 1px solid;
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.control-panel{
+  background-color: #00bbff;
+  width: 25%;
+  height: calc(100% - 20px);
+  padding: 10px;
+  box-shadow: 0 0 5px grey;
+  overflow: scroll;
+}
+.control-panel::-webkit-scrollbar{
+  display: none;
 }
 .logo{
   width: 30px;
@@ -23,116 +29,104 @@
   border-radius: 50%;
   -webkit-user-drag: none;
 }
-.three_btn{
-  width: 100px;
-  height: 30px;
-  border-radius: 20px;
-  background-color: #eeeeee;
-}
-.three_btn:hover{
-  background-color: #eeeeee90;
-}
-.three_footer{
-  background-color: #eeeeee70;
-  padding: 10px;
-  border: 1px solid;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-/* Three scene */
-.three_main{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 90vh;
-}
-/* Left control Panel */
-.three_left_control_panel{
-  width: 20%;
-  /* border: 1px solid; */
-  height: 100%;
-}
-.model_list{
-  display: flex;
-  justify-content: center;
-  align-items: start;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-.model{
-  width: 100px;
-  height: 100px;
-  border: 1px solid;
+/* Style the buttons that are used to open and close the accordion panel */
+.js-accordion {
+  background-color: #eee;
+  color: #444;
   cursor: pointer;
-  text-align: center;
-}
-.model:hover {
-  background-color: yellow;
-}
-/* Main three scene */
-.three_scene{
-  width: 60%;
-  border: 1px solid;
-  height: 100%;
-}
-#three_scene{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-/* Right Panel */
-.three_right_panel{
-  width: 20%;
-  /* border: 1px solid; */
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-.texture_choose_panel{
-  height: 50%;
+  padding: 18px;
   width: 100%;
-  /* border: 1px solid; */
-}
-.texture_list{
-  display: flex;
-  justify-content: center;
-  align-items: start;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-.texture{
-  width: 100px;
-  height: 100px;
-  border: 1px solid;
-  cursor: pointer;
-}
-.texture:hover {
-  background-color: yellow;
-}
-.text_edit_panel{
-  height: 50%;
-  width: 100%;
-  /* border: 1px solid; */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-}
-.text{
-  width: 80%;
-  height: 30px;
-  background-color: transparent;
+  text-align: left;
   border: none;
-  border-bottom: 1px solid;
-  outline: 0;
-  font-size: 14pt;
-  margin-inline: 10px;
-  text-align: center;
+  outline: none;
+  transition: 0.4s;
 }
-.enableText{
-  width: 40px;
-  height: 40px;
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.js-active, .js-accordion:hover {
+  background-color: #ccc;
+}
+
+/* Style the accordion panel. Note: hidden by default */
+.js-panel {
+  padding: 0 18px;
+  background-color: white;
+  display: none;
+  overflow: hidden;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+.js-model{
+  width: 120px;
+  height: 120px;
+  background-color: lightgreen;
+  margin: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 5px grey;
+  cursor: pointer;
+}
+.js-model:hover{
+  box-shadow: 0 0 10px grey;
+}
+.js-texture{
+  width: 120px;
+  height: 120px;
+  background-color: lightgreen;
+  margin: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.js-texture:hover{
+  box-shadow: 0 0 10px grey;
+}
+.js-textarea{
+  width: 100%;
+  outline: none;
+  margin: 5px;
+  font-size: 16pt;
+}
+.js-btn-addtext{
+  width: 100%;
+  padding: auto;
+  margin: 5px 0 10px 0;
+  font-size: 16pt;
+  color: white;
+  background-color: #00bbff;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  box-shadow: 0 0 5px grey;
+}
+.js-btn-addtext:hover{
+  background-color: white;
+  box-shadow: 0 0 5px #00bbff;
+  color: #00bbff;
+}
+.js-art{
+  width: 120px;
+  height: 120px;
+  background-color: lightgreen;
+  margin: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.js-art:hover{
+  box-shadow: 0 0 10px grey;
+}
+.js-controller{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px;
+  width: 100%;
+}
+.js-img{
+  width: 120px;
+  height: 120px;
+}
+.js-scene{
+  width: calc(75% - 5px);
+  height: 100%;
+  margin-left: 5px;
 }
